@@ -1,0 +1,350 @@
+<?xml version="1.0"?>
+<robot name="rover" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:arg name="namespace" default="" />
+  <!-- ========== MATERIAL DEFINITIONS ========== -->
+  <material name="blue">
+    <color rgba="0.01 0.2 0.8 1.0"/>
+  </material>
+  <material name="wheel_hub">
+    <color rgba="0.2 0.2 0.2 1.0"/>
+  </material>
+
+  <!-- ========== GAZEBO MATERIALS ========== -->
+  <gazebo reference="base_link">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+ 
+  <gazebo reference="front_left_wheel">
+    <material>
+      <mesh filename="package://w_rover/meshes/tyre_texture.png"/>
+    </material>
+  </gazebo>
+  <gazebo reference="front_right_wheel">
+    <material>
+      <mesh filename="package://w_rover/meshes/tyre_texture.png"/>
+    </material>
+  </gazebo>
+  <gazebo reference="rear_left_wheel">
+    <material>
+      <mesh filename="package://w_rover/meshes/tyre_texture.png"/>
+    </material>
+  </gazebo>
+  <gazebo reference="rear_right_wheel">
+    <material>
+      <mesh filename="package://w_rover/meshes/tyre_texture.png"/>
+    </material>
+  </gazebo>
+  
+  <link name="base_footprint"/>
+
+  <joint name="base_footprint_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0.03" rpy="0 0 0"/>
+  </joint>
+
+  <!-- ========== MAIN BODY ========== -->
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0.015" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.5 0.3 0.03"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.015" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.5 0.3 0.03"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0.015" rpy="0 0 0"/>  
+      <mass value="4.0"/>                   
+      <inertia ixx="0.05" iyy="0.05" izz="0.08" ixy="0.0" ixz="0.0" iyz="0.0"/>
+    </inertial>
+  </link>
+
+  <!-- ========== WHEELS ========== -->
+  <!-- Front Left Wheel -->
+  <link name="front_left_wheel">
+    <visual>
+      <origin xyz="0 0 0.0" rpy="0 1.570795 0"/>
+      <geometry>
+        <mesh filename="package://w_rover/meshes/model.dae"/>
+        <!--cylinder length="0.04" radius="0.06"/-->
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.0" rpy="1.570795 0 0"/>
+      <geometry>
+        <cylinder length="0.04" radius="0.06"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <joint name="front_left_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="front_left_wheel"/>
+    <origin xyz="0.15 0.175 -0.01" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <!-- Front Right Wheel -->
+  <link name="front_right_wheel">
+    <visual>
+      <origin xyz="0 0 0.0" rpy="0 1.570795 0"/>
+      <geometry>
+        <mesh filename="package://w_rover/meshes/model.dae"/>
+        <!--cylinder length="0.04" radius="0.06"/-->
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.0" rpy="1.570795 0 0"/>
+      <geometry>
+        <cylinder length="0.04" radius="0.06"/>
+        <!--mesh filename="package://w_rover/meshes/model.dae"/-->
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <joint name="front_right_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="front_right_wheel"/>
+    <origin xyz="0.15 -0.175 -0.01" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <!-- Rear Left Wheel -->
+  <link name="rear_left_wheel">
+    <visual>
+      <origin xyz="0 0 0.0" rpy="0 1.570795 0"/>
+      <geometry>
+        <mesh filename="package://w_rover/meshes/model.dae"/>
+        <!--cylinder length="0.04" radius="0.06"/-->
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.0" rpy="1.570795 0 0"/>
+      <geometry>
+        <cylinder length="0.04" radius="0.06"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <joint name="rear_left_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="rear_left_wheel"/>
+    <origin xyz="-0.15 0.175 -0.01" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+  
+  <!-- Rear Right Wheel -->
+  <link name="rear_right_wheel">
+    <visual>
+      <origin xyz="0 0 0.0" rpy="0 1.570795 0"/>
+      <geometry>
+        <mesh filename="package://w_rover/meshes/model.dae"/>
+        <!--cylinder length="0.04" radius="0.06"/-->
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.0" rpy="1.570795 0 0"/>
+      <geometry>
+        <cylinder length="0.04" radius="0.06"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <joint name="rear_right_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="rear_right_wheel"/>
+    <origin xyz="-0.15 -0.175 -0.01" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <!-- ========== CAMERA ========== -->
+  <link name="camera_mount">
+    <visual>
+      <geometry>
+        <box size="0.08 0.04 0.04"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <material name="wheel_hub"/>
+    </visual>
+    <inertial>
+      <mass value="0.1"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+    </inertial>
+  </link>
+
+  <joint name="camera_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="camera_mount"/>
+    <origin xyz="0.25 0 0.03" rpy="0 0 0"/>
+  </joint>
+  <!-- LEFT CAMERA -->
+<link name="camera_left_link">
+  <visual>
+    <geometry>
+      <box size="0.05 0.05 0.03"/>
+    </geometry>
+    <material name="blue"/>
+  </visual>
+  <inertial>
+    <mass value="0.05"/>
+    <inertia ixx="0.00001" ixy="0.0" ixz="0.0"
+             iyy="0.00001" iyz="0.0" izz="0.00001"/>
+  </inertial>
+</link>
+
+<joint name="camera_left_joint" type="fixed">
+  <parent link="camera_mount"/>
+  <child link="camera_left_link"/>
+  <origin xyz="0 0.03 0.04" rpy="0 0 0"/> <!-- slightly left -->
+</joint>
+
+<!-- RIGHT CAMERA -->
+<link name="camera_right_link">
+  <visual>
+    <geometry>
+      <box size="0.05 0.05 0.03"/>
+    </geometry>
+    <material name="blue"/>
+  </visual>
+  <inertial>
+    <mass value="0.05"/>
+    <inertia ixx="0.00001" ixy="0.0" ixz="0.0"
+             iyy="0.00001" iyz="0.0" izz="0.00001"/>
+  </inertial>
+</link>
+
+<joint name="camera_right_joint" type="fixed">
+  <parent link="camera_mount"/>
+  <child link="camera_right_link"/>
+  <origin xyz="0 -0.03 0.04" rpy="0 0 0"/> <!-- slightly right -->
+</joint>
+<!-- LEFT CAMERA SENSOR -->
+<gazebo reference="camera_left_link">
+  <sensor name="stereo_left_camera" type="camera">
+    <update_rate>30</update_rate>
+    <visualize>true</visualize>
+    <camera name="left_camera">
+      <horizontal_fov>1.047</horizontal_fov>
+      <image>
+        <width>640</width>
+        <height>480</height>
+        <format>R8G8B8</format>
+      </image>
+      <clip>
+        <near>0.05</near>
+        <far>100.0</far>
+      </clip>
+    </camera>
+
+    <plugin name="left_camera_plugin" filename="libgazebo_ros_camera.so">
+      <ros>
+        <namespace>/stereo/left</namespace>
+        <remapping>image_raw:=image_raw</remapping>
+        <remapping>camera_info:=camera_info</remapping>
+      </ros>
+      <camera_name>left_camera</camera_name>
+      <frame_name>camera_left_link</frame_name>
+    </plugin>
+  </sensor>
+</gazebo>
+
+<!-- RIGHT CAMERA SENSOR -->
+<gazebo reference="camera_right_link">
+  <sensor name="stereo_right_camera" type="camera">
+    <update_rate>30</update_rate>
+    <visualize>true</visualize>
+    <camera name="right_camera">
+      <horizontal_fov>1.047</horizontal_fov>
+      <image>
+        <width>640</width>
+        <height>480</height>
+        <format>R8G8B8</format>
+      </image>
+      <clip>
+        <near>0.05</near>
+        <far>100.0</far>
+      </clip>
+    </camera>
+
+    <plugin name="right_camera_plugin" filename="libgazebo_ros_camera.so">
+      <ros>
+        <namespace>/stereo/right</namespace>
+        <remapping>image_raw:=image_raw</remapping>
+        <remapping>camera_info:=camera_info</remapping>
+      </ros>
+      <camera_name>right_camera</camera_name>
+      <frame_name>camera_right_link</frame_name>
+    </plugin>
+  </sensor>
+</gazebo>
+
+
+    
+
+  <!-- ==================================== -->
+  <!-- ROS2 Control Hardware Configuration -->
+  <!-- ==================================== -->
+  <ros2_control name="GazeboSystem" type="system">
+    <hardware>
+      <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+    </hardware>
+
+    <joint name="front_left_wheel_joint">
+      <command_interface name="velocity"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="front_right_wheel_joint">
+      <command_interface name="velocity"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="rear_left_wheel_joint">
+      <command_interface name="velocity"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="rear_right_wheel_joint">
+      <command_interface name="velocity"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+  </ros2_control>
+
+  <!-- Gazebo Plugin to load ros2_control -->
+  <gazebo>
+    <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+      <ros>
+        <namespace>$(arg namespace)</namespace>
+      </ros>
+      <parameters>$(find w_rover)/config/rover_controllers.yaml</parameters>
+    </plugin>
+  </gazebo>
+  
+</robot>
