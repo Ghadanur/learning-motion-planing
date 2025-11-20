@@ -11,7 +11,9 @@
 
   <!-- ========== GAZEBO MATERIALS ========== -->
   <gazebo reference="base_link">
-    <material>Gazebo/Blue</material>
+    <material>
+      <mesh filename="package://w_rover/meshes/base/color_map.png"/>
+    </material>
   </gazebo>
  
   <gazebo reference="front_left_wheel">
@@ -35,27 +37,20 @@
     </material>
   </gazebo>
   
-  <link name="base_footprint"/>
-
-  <joint name="base_footprint_joint" type="fixed">
-    <parent link="base_footprint"/>
-    <child link="base_link"/>
-    <origin xyz="0 0 0.03" rpy="0 0 0"/>
-  </joint>
 
   <!-- ========== MAIN BODY ========== -->
   <link name="base_link">
     <visual>
       <origin xyz="0 0 0.015" rpy="0 0 0"/>
       <geometry>
-        <box size="0.5 0.3 0.03"/>
+        <mesh filename="package://w_rover/meshes/base/model.dae" scale="0.5 0.5 0.5"/>
       </geometry>
-      <material name="blue"/>
+        
     </visual>
     <collision>
       <origin xyz="0 0 0.015" rpy="0 0 0"/>
       <geometry>
-        <box size="0.5 0.3 0.03"/>
+        <mesh filename="package://w_rover/meshes/base/model.dae" scale="0.1 0.1 0.1"/>
       </geometry>
     </collision>
     <inertial>
@@ -64,7 +59,7 @@
       <inertia ixx="0.05" iyy="0.05" izz="0.08" ixy="0.0" ixz="0.0" iyz="0.0"/>
     </inertial>
   </link>
-
+  
   <!-- ========== WHEELS ========== -->
   <!-- Front Left Wheel -->
   <link name="front_left_wheel">
@@ -179,6 +174,7 @@
     <axis xyz="0 1 0"/>
   </joint>
 
+
   <!-- ========== CAMERA ========== -->
   <link name="camera_mount">
     <visual>
@@ -241,6 +237,7 @@
   <child link="camera_right_link"/>
   <origin xyz="0 -0.03 0.04" rpy="0 0 0"/> <!-- slightly right -->
 </joint>
+
 <!-- LEFT CAMERA SENSOR -->
 <gazebo reference="camera_left_link">
   <sensor name="stereo_left_camera" type="camera">
@@ -261,12 +258,13 @@
 
     <plugin name="left_camera_plugin" filename="libgazebo_ros_camera.so">
       <ros>
-        <namespace>/stereo/left</namespace>
+        <namespace>/left</namespace>
         <remapping>image_raw:=image_raw</remapping>
         <remapping>camera_info:=camera_info</remapping>
       </ros>
-      <camera_name>left_camera</camera_name>
+      <camera_name>left</camera_name>
       <frame_name>camera_left_link</frame_name>
+        <camera_info_url>file:///home/ghada/ros2_ws/calibration/left.yaml</camera_info_url>
     </plugin>
   </sensor>
 </gazebo>
@@ -291,15 +289,18 @@
 
     <plugin name="right_camera_plugin" filename="libgazebo_ros_camera.so">
       <ros>
-        <namespace>/stereo/right</namespace>
+        <namespace>/right</namespace>
         <remapping>image_raw:=image_raw</remapping>
         <remapping>camera_info:=camera_info</remapping>
       </ros>
-      <camera_name>right_camera</camera_name>
+      <camera_name>right</camera_name>
       <frame_name>camera_right_link</frame_name>
+        <camera_info_url>file:///home/ghada/ros2_ws/calibration/right.yaml</camera_info_url>
     </plugin>
   </sensor>
 </gazebo>
+
+
 
 
     
@@ -342,6 +343,8 @@
     <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
       <ros>
         <namespace>$(arg namespace)</namespace>
+        <remapping>/diff_drive_controller/cmd_vel_unstamped:=/cmd_vel</remapping>
+        <remapping>/diff_drive_controller/odom:=/odom</remapping>  
       </ros>
       <parameters>$(find w_rover)/config/rover_controllers.yaml</parameters>
     </plugin>

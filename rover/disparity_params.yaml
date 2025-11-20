@@ -1,0 +1,32 @@
+stereo_image_proc:
+
+  left:
+    image_width: 640
+    image_height: 480
+
+  right:
+    image_width: 640
+    image_height: 480
+
+  # Camera intrinsic parameters
+  fx: 2171.04361          # from P_left
+  baseline: 0.04195       # meters (computed from Tx / fx)
+
+  disparity:
+    min_disparity: 0
+    max_disparity: 128        # multiple of 16
+    window_size: 5
+    stereo_algorithm: 1       # 1 = SGBM (recommended)
+    uniqueness_ratio: 10
+    speckle_filter: true
+    speckle_range: 4
+    speckle_window_size: 100
+    disp12_max_diff: 1
+    pre_filter_cap: 31
+    pre_filter_size: 9
+    texture_threshold: 10
+
+    smoothness:
+      p1: 8
+      p2: 32
+
