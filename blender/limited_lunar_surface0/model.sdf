@@ -1,0 +1,53 @@
+<?xml version="1.0" ?>
+<sdf version="1.7">
+  <model name="limited_lunar_surface0">
+    <link name="limited_lunar_surface0_link">
+      <pose>0 0 0 1.5708 0 0</pose>
+
+      <visual name="limited_lunar_surface0_visual">
+        <geometry>
+          <mesh>
+            <uri>meshes/limited_lunar_surface0.obj</uri>
+          </mesh>
+        </geometry>
+        <!-- PBR Material with Albedo and Normal Maps -->
+        <material>
+          <script>
+            <uri>model://limited_lunar_surface0/materials/scripts</uri>
+            <uri>model://limited_lunar_surface0/materials/textures</uri>
+            <name>Moon/Surface</name>
+          </script>
+          <pbr>
+            <albedo_map>model://limited_lunar_surface0/meshes/albedo.png</albedo_map>
+            <normal_map>model://limited_lunar_surface0/meshes/normal.png</normal_map>
+            <roughness>0.8</roughness>
+            <metalness>0.0</metalness>
+          </pbr>
+        </material>
+      </visual>
+
+      <collision name="limited_lunar_surface0_collision">
+        <geometry>
+          <mesh>
+            <uri>meshes/limited_lunar_surface0.obj</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>10.0</mu>
+              <mu2>10.0</mu2>
+            </ode>
+          </friction>
+          <contact>
+            <ode>
+              <kp>1e5</kp>
+              <kd>1.0</kd>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+
+    </link>
+  </model>
+</sdf>
