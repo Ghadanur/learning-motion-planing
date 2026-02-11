@@ -1,0 +1,450 @@
+<?xml version="1.0"?>
+<robot name="rover" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:arg name="namespace" default="" />
+
+  <!-- ======= MATERIAL DEFINITIONS ======= -->
+  <material name="body_teal">
+    <color rgba="1.0 0.5 0.5 1.0"/>
+  </material>
+  <material name="wheel_rim">
+    <color rgba="0.7 0.7 0.75 1.0"/>
+  </material>
+  <material name="wheel_hub">
+    <color rgba="0.2 0.2 0.2 1.0"/>
+  </material>
+  <material name="wheel_tread">
+    <color rgba="0.05 0.05 0.05 1.0"/>
+  </material>
+  <material name="green_laser">
+    <color rgba="0 1.0 0 1.0"/>
+  </material>
+
+  <!-- ======= GAZEBO MATERIALS ======= -->
+  <gazebo reference="base_link">
+    <material>Gazebo/Green</material>
+  </gazebo>
+  <gazebo reference="front_left_wheel">
+    <material>Gazebo/Black</material>
+    <mu1 value= "0.0"/> <!--main direction-->
+    <mu2 value= "0.0"/> <!--perpendicular direction-->
+  </gazebo>
+  <gazebo reference="front_right_wheel">
+    <material>Gazebo/Black</material>
+    <mu1 value= "0.0"/> <!--main direction-->
+    <mu2 value= "0.0"/> <!--perpendicular direction-->
+  </gazebo>
+  <gazebo reference="rear_left_wheel">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <gazebo reference="rear_right_wheel">
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <!-- ======= BASE FOOTPRINT ======= -->
+  <link name="base_footprint"/>
+
+  <joint name="base_footprint_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0.05" rpy="0 0 0"/>
+  </joint>
+
+  <!-- ======= MAIN BODY ======= -->
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="0.5 0.3 0.03"/>
+      </geometry>
+      <origin xyz="0 0 0.05" rpy="0 0 0"/>
+      <material name="body_teal"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.5 0.3 0.03"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="3.0"/>
+      <inertia ixx="0.022725" ixy="0" ixz="0" iyy="0.062725" iyz="0" izz="0.085000"/>
+    </inertial>
+  </link>
+
+   <!-- ======= WHEELS (solid cylinders) ======= -->
+  <!-- Front Left Wheel -->
+  <link name="front_left_wheel">
+    <visual>
+      <geometry>
+        <cylinder length="0.04" radius="0.06"/>
+      </geometry>
+      <material name="wheel_tread"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.04" radius="0.06"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.3"/>
+      <inertia ixx="0.00031" ixy="0" ixz="0" iyy="0.00054" iyz="0" izz="0.00031"/>
+    </inertial>
+  </link>
+
+  <joint name="front_left_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="front_left_wheel"/>
+    <origin xyz="0.15 0.175 0.03" rpy="${-pi/2} 0 0"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <!-- Front Right Wheel -->
+  <link name="front_right_wheel">
+    <visual>
+      <geometry>
+        <cylinder length="0.04" radius="0.06"/>
+      </geometry>
+      <material name="wheel_tread"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.04" radius="0.06"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.3"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.00031" ixy="0" ixz="0" iyy="0.00054" iyz="0" izz="0.00031"/>
+    </inertial>
+  </link>
+
+  <joint name="front_right_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="front_right_wheel"/>
+    <origin xyz="0.15 -0.175 0.03" rpy="${pi/2} 0 0"/>
+    <axis xyz="0 0 -1"/>
+  </joint>
+
+  <!-- Rear Left Wheel -->
+  <link name="rear_left_wheel">
+    <visual>
+      <geometry>
+        <cylinder length="0.04" radius="0.06"/>
+      </geometry>
+      <material name="wheel_tread"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.04" radius="0.06"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.3"/>
+      <inertia ixx="0.00031" ixy="0" ixz="0" iyy="0.00054" iyz="0" izz="0.00031"/>
+    </inertial>
+  </link>
+
+  <joint name="rear_left_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="rear_left_wheel"/>
+    <origin xyz="-0.15 0.175 0.03" rpy="${-pi/2} 0 0"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <!-- Rear Right Wheel -->
+  <link name="rear_right_wheel">
+    <visual>
+      <geometry>
+        <cylinder length="0.04" radius="0.06"/>
+      </geometry>
+      <material name="wheel_tread"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.04" radius="0.06"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.3"/>
+      <inertia ixx="0.00031" ixy="0" ixz="0" iyy="0.00054" iyz="0" izz="0.00031"/>
+    </inertial>
+  </link>
+
+  <joint name="rear_right_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="rear_right_wheel"/>
+    <origin xyz="-0.15 -0.175 0.03" rpy="${pi/2} 0 0"/>
+    <axis xyz="0 0 -1"/>
+  </joint>
+
+  <link name="link2_mount">
+    <visual>
+      <geometry>
+        <box size="0.08 0.04 0.04"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <material name="wheel_hub"/>
+    </visual>
+    <inertial>
+      <mass value="0.1"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.00002667" ixy="0.0" ixz="0.0" iyy="0.00006667" iyz="0.0" izz="0.00006667"/>
+    </inertial>
+  </link>
+
+  <!-- ======= LASER SENSORS ======= -->
+  <!-- Vertical laser mounted on link1_mount -->
+  
+  <!-- Horizontal laser mounted on base_link -->
+  <link name="laser_link2">
+    <visual>
+      <geometry>
+        <cylinder length="0.05" radius="0.05"/>
+      </geometry>
+      <material name="green_laser"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.05" radius="0.05"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="0.00008333" ixy="0.0" ixz="0.0" iyy="0.000125" iyz="0.0" izz="0.00008333"/>
+    </inertial>
+  </link>
+  
+   <joint name="base_to_link2_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="link2_mount"/>
+    <origin xyz="0.20 0 0.09" rpy="0 0 0"/>
+  </joint>
+
+
+  <joint name="laser_joint2" type="fixed">
+    <parent link="link2_mount"/>
+    <child link="laser_link2"/>
+    <origin xyz="0 0 0.03"  rpy="0 0 0"/>
+  </joint>
+
+  <!-- ======= GAZEBO PLUGINS for sensors ======= -->
+  <gazebo reference="link1_mount">
+    <sensor name="laser_vertical" type="ray">
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>false</visualize>
+      <update_rate>10.0</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>720</samples>
+            <resolution>1.0</resolution>
+            <min_angle>-1.57</min_angle>
+            <max_angle>1.57</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.1</min>
+          <max>10.0</max>
+          <resolution>0.01</resolution>
+        </range>
+      </ray>
+      <plugin name="gazebo_ros_vertical_laser" filename="libgazebo_ros_ray_sensor.so">
+        <ros>
+         <remapping>~/out:=v_scan</remapping>
+        </ros>
+        <topicName>/vertical_scan</topicName>
+        <frameName>laser_link1</frameName>
+        <output_type>sensor_msgs/LaserScan</output_type>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="link2_mount">
+    <sensor name="laser_horizontal" type="ray">
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>true</visualize>
+      <update_rate>10</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>720</samples>
+            <resolution>1.0</resolution>
+            <min_angle>-3.14</min_angle>
+            <max_angle>3.14</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.1</min>
+          <max>10.0</max>
+          <resolution>0.01</resolution>
+        </range>
+      </ray>
+      <plugin name="gazebo_ros_horizontal_laser" filename="libgazebo_ros_ray_sensor.so">
+        <ros>
+         <remapping>~/out:=scan</remapping>
+        </ros>
+        <topicName>/horizontal_scan</topicName>
+        <frameName>laser_link2</frameName>
+        <output_type>sensor_msgs/LaserScan</output_type>
+      </plugin>
+    </sensor>
+  </gazebo>
+  
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+    <origin xyz="0.0 0 0.068" rpy="0 0 0"/>
+  </joint>
+
+  <link name="imu_link">
+   <visual>
+    <geometry>
+      <box size="0.1 0.1 0.1" />
+    </geometry>
+       <material name="Cyan">
+         <color rgba="0 1.0 1.0 1.0" />
+       </material>
+   </visual>
+   <collision>
+    <geometry>
+      <box size="0.1 0.1 0.1" />
+    </geometry>
+   </collision>
+   <inertial>
+    <mass value="0.01"/>
+    <inertia 
+      ixx="1e-5" iyy="1e-5" izz="1e-5"
+      ixy="0" ixz="0" iyz="0"/>
+   </inertial>
+  </link>
+  
+  <gazebo reference="imu_link">
+  <sensor name="imu_sensor" type="imu">
+    <plugin filename="libgazebo_ros_imu_sensor.so" name="gazebo_ros_imu_sensor">
+      <ros>
+        <namespace>/</namespace>
+        <remapping>~/out:=imu</remapping>
+      </ros>
+      <initial_orientation_as_reference>false</initial_orientation_as_reference>
+      <frame_name>imu_link</frame_name>
+    </plugin>
+    <always_on>true</always_on>
+    <update_rate>100</update_rate>
+    <visualize>true</visualize>
+    <imu>
+               <angular_velocity>
+                   <x>
+                       <noise type="gaussian">
+                           <mean>0.0</mean>
+                           <stddev>2e-4</stddev>
+                           <bias_mean>0.0000075</bias_mean>
+                           <bias_stddev>0.0000008</bias_stddev>
+                       </noise>
+                   </x>
+                   <y>
+                       <noise type="gaussian">
+                           <mean>0.0</mean>
+                           <stddev>2e-4</stddev>
+                           <bias_mean>0.0000075</bias_mean>
+                           <bias_stddev>0.0000008</bias_stddev>
+                       </noise>
+                   </y>
+                   <z>
+                       <noise type="gaussian">
+                           <mean>0.0</mean>
+                           <stddev>2e-4</stddev>
+                           <bias_mean>0.0000075</bias_mean>
+                           <bias_stddev>0.0000008</bias_stddev>
+                       </noise>
+                   </z>
+               </angular_velocity>
+               <linear_acceleration>
+                   <x>
+                       <noise type="gaussian">
+                           <mean>0.0</mean>
+                           <stddev>1.7e-2</stddev>
+                           <bias_mean>0.1</bias_mean>
+                           <bias_stddev>0.001</bias_stddev>
+                       </noise>
+                   </x>
+                   <y>
+                       <noise type="gaussian">
+                           <mean>0.0</mean>
+                           <stddev>1.7e-2</stddev>
+                           <bias_mean>0.1</bias_mean>
+                           <bias_stddev>0.001</bias_stddev>
+                       </noise>
+                   </y>
+                   <z>
+                       <noise type="gaussian">
+                           <mean>0.0</mean>
+                           <stddev>1.7e-2</stddev>
+                           <bias_mean>0.1</bias_mean>
+                           <bias_stddev>0.001</bias_stddev>
+                       </noise>
+                   </z>
+               </linear_acceleration>
+           </imu>
+       </sensor>
+ </gazebo>
+
+   <!-- ==================================== -->
+  <!-- ROS2 Control Hardware Configuration -->
+  <!-- ==================================== -->
+  <ros2_control name="GazeboSystem" type="system">
+    <hardware>
+      <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+    </hardware>
+    
+    <joint name="front_left_wheel_joint">
+      <command_interface name="velocity">
+        <param name="min">-1</param>
+        <param name="max">1</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+
+    <joint name="rear_left_wheel_joint">
+      <command_interface name="velocity">
+        <param name="min">-1</param>
+        <param name="max">1</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="front_right_wheel_joint">
+      <command_interface name="velocity">
+        <param name="min">-1</param>
+        <param name="max">1</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    
+    <joint name="rear_right_wheel_joint">
+      <command_interface name="velocity">
+        <param name="min">-1</param>
+        <param name="max">1</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+  </ros2_control>
+
+  <!-- Gazebo Plugin to load ros2_control -->
+  <gazebo>
+    <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+    <parameters>$(find w_rover)/config/rover_controllers.yaml</parameters>
+      <ros>
+        <namespace>$(arg namespace)</namespace>
+        <remapping>/diff_drive_controller/cmd_vel_unstamped:=/cmd_vel</remapping>
+        <remapping>/diff_drive_controller/odom:=/odom</remapping>
+      </ros>
+      
+    </plugin>
+  </gazebo>
+</robot>
+
